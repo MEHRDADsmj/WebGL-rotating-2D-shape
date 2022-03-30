@@ -133,7 +133,7 @@ function DegToRad(degrees)
     return degrees * Math.PI / 180.0
 }
 
-var TriRot;
+var TriRot = 0;
 
 function DrawScene()
 {
@@ -160,9 +160,17 @@ function SetMatrixUniforms()
     gl.uniformMatrix4fv(Program.mvMatrixUniform, false, mvMatrix);
 }
 
+var LastTime = 0;
+
 function UpdateAnimation()
 {
-
+    var CurrentTime = new Date().getTime();
+    if(LastTime != 0)
+    {
+        var TimeElapsed = CurrentTime - LastTime;
+        TriRot += (90 * TimeElapsed) / 1000.0;
+    }
+    LastTime = CurrentTime;
 }
 
 function Tick()
