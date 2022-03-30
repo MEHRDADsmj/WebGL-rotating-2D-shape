@@ -111,6 +111,30 @@ function InitBuffers()
     TriangleVertexPositionBuffer.numItems = 15;
 }
 
+var mvMatrix = mat4.create();
+var mvMatrixStack = [];
+var pMatrix = mat4.create();
+
+function mvPushMatrix() {
+    var copy = mat4.create();
+    mat4.set(mvMatrix, copy);
+    mvMatrixStack.push(copy);
+}
+
+function mvPopMatrix() {
+    if (mvMatrixStack.length == 0) {
+        throw "Invalid popMatrix!";
+    }
+    mvMatrix = mvMatrixStack.pop();
+}
+
+function DegToRad(degrees)
+{
+    return degrees * Math.PI / 180.0
+}
+
+var TriRot;
+
 function DrawScene()
 {
     gl.viewport(0.0, 0.0, gl.viewportWidth, gl.viewportHeight);
@@ -118,16 +142,17 @@ function DrawScene()
 
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
     mat4.identity(mvMatrix);
-
     mat4.translate(mvMatrix, [0.0, 0.0, -7.0]);
+
+    mvPushMatrix();
+    mat4.rotate(mvMatrix, DegToRad(TriRot), [0, 1, 0]);
+
     gl.bindBuffer(gl.ARRAY_BUFFER, TriangleVertexPositionBuffer);
     gl.vertexAttribPointer(Program.vertexPositionAttribute, TriangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
     SetMatrixUniforms();
     gl.drawArrays(gl.TRIANGLES, 0, TriangleVertexPositionBuffer.numItems);
+    mvPopMatrix();
 }
-
-var pMatrix = mat4.create();
-var mvMatrix = mat4.create();
 
 function SetMatrixUniforms()
 {
@@ -137,14 +162,14 @@ function SetMatrixUniforms()
 
 function UpdateAnimation()
 {
-    
+
 }
 
 function Tick()
 {
     requestAnimationFrame(Tick);
-    UpdateAnimation();
     DrawScene();
+    UpdateAnimation();
 }
 
 window.onload = function()
