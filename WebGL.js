@@ -144,14 +144,14 @@ function DrawScene()
     mat4.identity(mvMatrix);
     mat4.translate(mvMatrix, [0.0, 0.0, -7.0]);
 
-    mvPushMatrix();
+    // mvPushMatrix();
     mat4.rotate(mvMatrix, DegToRad(TriRot), [0, 1, 0]);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, TriangleVertexPositionBuffer);
     gl.vertexAttribPointer(Program.vertexPositionAttribute, TriangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
     SetMatrixUniforms();
     gl.drawArrays(gl.TRIANGLES, 0, TriangleVertexPositionBuffer.numItems);
-    mvPopMatrix();
+    // mvPopMatrix();
 }
 
 function SetMatrixUniforms()
