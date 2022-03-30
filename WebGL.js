@@ -135,6 +135,18 @@ function SetMatrixUniforms()
     gl.uniformMatrix4fv(Program.mvMatrixUniform, false, mvMatrix);
 }
 
+function UpdateAnimation()
+{
+    
+}
+
+function Tick()
+{
+    requestAnimationFrame(Tick);
+    UpdateAnimation();
+    DrawScene();
+}
+
 window.onload = function()
 {
     var canvas = document.getElementById("main_canvas");
@@ -145,5 +157,5 @@ window.onload = function()
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
 
-    DrawScene();
+    Tick();
 };
