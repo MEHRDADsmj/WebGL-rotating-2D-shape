@@ -72,11 +72,15 @@ function InitShaders()
     Program.vertexPositionAttribute = gl.getAttribLocation(Program, "aVertexPosition");
     gl.enableVertexAttribArray(Program.vertexPositionAttribute);
 
+    Program.vertexColorAttribute = gl.getAttribLocation(Program, "aVertexColor");
+    gl.enableVertexAttribArray(Program.vertexColorAttribute);
+
     Program.pMatrixUniform = gl.getUniformLocation(Program, "uPMatrix");
     Program.mvMatrixUniform = gl.getUniformLocation(Program, "uMVMatrix");
 }
 
 var TriangleVertexPositionBuffer;
+var TriangleVertexColorBuffer;
 
 function InitBuffers()
 {
@@ -103,12 +107,41 @@ function InitBuffers()
         0.0, -1.5, 0.0
     ];
 
+    var colors = [
+        1.0, 0.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        ///////////////
+        1.0, 0.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        ///////////////
+        1.0, 0.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        ///////////////
+        1.0, 0.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        1.0, 0.0, 0.0, 1.0,
+        ///////////////
+        0.0, 1.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0,
+        0.0, 1.0, 0.0, 1.0
+    ];
+
     TriangleVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, TriangleVertexPositionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
     TriangleVertexPositionBuffer.itemSize = 3;
     TriangleVertexPositionBuffer.numItems = 15;
+
+    TriangleVertexColorBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, TriangleVertexColorBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+
+    TriangleVertexColorBuffer.itemSize = 4;
+    TriangleVertexColorBuffer.numItems = 15;
 }
 
 var mvMatrix = mat4.create();
@@ -149,6 +182,9 @@ function DrawScene()
 
     gl.bindBuffer(gl.ARRAY_BUFFER, TriangleVertexPositionBuffer);
     gl.vertexAttribPointer(Program.vertexPositionAttribute, TriangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, TriangleVertexColorBuffer);
+    gl.vertexAttribPointer(Program.vertexColorAttribute, TriangleVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
     SetMatrixUniforms();
     gl.drawArrays(gl.TRIANGLES, 0, TriangleVertexPositionBuffer.numItems);
     // mvPopMatrix();

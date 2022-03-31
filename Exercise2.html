@@ -10,9 +10,11 @@
         precision highp float;
         #endif
 
+        varying vec4 vColor;
+
         void main()
         {
-            if(gl_FragCoord.y > 484.0)
+            /*if(gl_FragCoord.y > 484.0)
             {
                 gl_FragColor = vec4(1.0, 0.3, 0.0, 1.0);
             }
@@ -23,19 +25,24 @@
             else
             {
                 gl_FragColor = vec4(0.4, 0.2, 0.0, 1.0);
-            }
+            }*/
+            gl_FragColor = vColor;
         }
     </script>
 
     <script type="x-shader/x-vertex" id="vertex">
         attribute vec3 aVertexPosition;
+        attribute vec4 aVertexColor;
 
         uniform mat4 uPMatrix;
         uniform mat4 uMVMatrix;
 
+        varying vec4 vColor;
+
         void main()
         {
             gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+            vColor = aVertexColor;
         }
     </script>
 
